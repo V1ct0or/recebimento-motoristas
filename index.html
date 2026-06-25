@@ -1,31 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Recebimento Motoristas</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+input{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button{
+    width: 100%;
+    padding: 12px;
+    background:#e4002b;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+#resultado div{
+    padding:10px;
+    border:1px solid #ccc;
+    margin-top:5px;
+    cursor:pointer;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1>Recebimento de Motoristas</h1>
+<h2>Recebimento de Motoristas</h2>
 
-<p>Fornecedor</p>
-<input type="text">
+<input
+type="text"
+id="pesquisa"
+placeholder="Pesquisar produto..."
+>
 
-<p>Produto</p>
-<input type="text">
+<div id="resultado"></div>
 
-<p>NF</p>
-<input type="text">
+<br>
 
-<p>Placa</p>
-<input type="text">
+<input
+type="text"
+id="nf"
+placeholder="Número da NF"
+>
 
-<p>Motorista</p>
-<input type="text">
+<input
+type="text"
+id="placa"
+placeholder="Placa"
+>
 
-<br><br>
+<input
+type="text"
+id="motorista"
+placeholder="Motorista"
+>
 
-<button>Enviar</button>
+<button>
+Registrar Chegada
+</button>
+
+<script>
+
+const produtos = [
+
+"PALLETS DE MADEIRA (PBR)",
+"CABO P/SENS;CONEX;SENS;KEYENCE/OP87637",
+"BANCO ASA INDIVIDUAL"
+
+];
+
+const pesquisa =
+document.getElementById("pesquisa");
+
+const resultado =
+document.getElementById("resultado");
+
+pesquisa.addEventListener("input", function(){
+
+const texto =
+this.value.toLowerCase();
+
+resultado.innerHTML = "";
+
+produtos
+.filter(item => item.toLowerCase().includes(texto))
+.forEach(item => {
+
+const div =
+document.createElement("div");
+
+div.innerText = item;
+
+resultado.appendChild(div);
+
+});
+
+});
+
+</script>
 
 </body>
 </html>
