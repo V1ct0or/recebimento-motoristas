@@ -7,71 +7,72 @@
 <title>Recebimento Motoristas</title>
 
 <style>
-
 body{
     font-family: Arial;
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
+    max-width: 600px;
+    margin:auto;
+    padding:20px;
 }
 
 input{
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:10px;
 }
 
 button{
-    width: 100%;
-    padding: 12px;
+    width:100%;
+    padding:12px;
     background:#e4002b;
     color:white;
     border:none;
     cursor:pointer;
 }
 
-#resultado div{
-    padding:10px;
+#resultado{
     border:1px solid #ccc;
-    margin-top:5px;
-    cursor:pointer;
+    max-height:250px;
+    overflow-y:auto;
 }
 
-</style>
+#resultado div{
+    padding:8px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+}
 
+#resultado div:hover{
+    background:#f0f0f0;
+}
+</style>
 </head>
 
 <body>
 
 <h2>Recebimento de Motoristas</h2>
 
-<input
-type="text"
-id="pesquisa"
-placeholder="Pesquisar produto..."
->
+<label>Pesquisar Produto</label>
+<input type="text" id="pesquisa">
 
 <div id="resultado"></div>
 
 <br>
 
-<input
-type="text"
-id="nf"
-placeholder="Número da NF"
->
+<label>Fornecedor</label>
+<input type="text" id="fornecedor" readonly>
 
-<input
-type="text"
-id="placa"
-placeholder="Placa"
->
+<label>Produto</label>
+<input type="text" id="produto" readonly>
 
-<input
-type="text"
-id="motorista"
-placeholder="Motorista"
->
+<label>NF</label>
+<input type="text" id="nf">
+
+<label>Placa</label>
+<input type="text" id="placa">
+
+<label>Motorista</label>
+<input type="text" id="motorista">
 
 <button>
 Registrar Chegada
@@ -79,37 +80,56 @@ Registrar Chegada
 
 <script>
 
-const produtos = [
-
-"PALLETS DE MADEIRA (PBR)",
-"CABO P/SENS;CONEX;SENS;KEYENCE/OP87637",
-"BANCO ASA INDIVIDUAL"
-
-];
-
 const pesquisa =
 document.getElementById("pesquisa");
 
 const resultado =
 document.getElementById("resultado");
 
-pesquisa.addEventListener("input", function(){
+pesquisa.addEventListener("input", async () => {
 
 const texto =
-this.value.toLowerCase();
+pesquisa.value.toLowerCase();
+
+const resposta =
+await fetch("produtos.csv.CSV");
+
+const csv =
+await resposta.text();
+
+const linhas =
+csv.split("\n");
 
 resultado.innerHTML = "";
 
-produtos
-.filter(item => item.toLowerCase().includes(texto))
-.forEach(item => {
+linhas.forEach(linha => {
+
+if(linha.toLowerCase().includes(texto))
+{
 
 const div =
 document.createElement("div");
 
-div.innerText = item;
+div.innerText = linha;
+
+div.onclick = () => {
+
+const campos =
+linha.split(",");
+
+document.getElementById(
+"fornecedor"
+).value = campos[0] || "";
+
+document.getElementById(
+"produto"
+).value = campos[1] || "";
+
+};
 
 resultado.appendChild(div);
+
+}
 
 });
 
