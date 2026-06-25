@@ -7,18 +7,23 @@
 <title>Recebimento Motoristas</title>
 
 <style>
+
 body{
-    font-family: Arial;
-    max-width: 600px;
+    font-family: Arial, sans-serif;
+    max-width: 700px;
     margin:auto;
     padding:20px;
+}
+
+h2{
+    text-align:center;
 }
 
 input{
     width:100%;
     padding:10px;
-    margin-top:5px;
     margin-bottom:10px;
+    box-sizing:border-box;
 }
 
 button{
@@ -28,26 +33,28 @@ button{
     color:white;
     border:none;
     cursor:pointer;
+    font-size:16px;
 }
 
 #resultado{
     border:1px solid #ccc;
     max-height:250px;
     overflow-y:auto;
+    margin-bottom:15px;
 }
 
 #resultado div{
-    padding:8px;
-    cursor:pointer;
+    padding:10px;
     border-bottom:1px solid #eee;
+    cursor:pointer;
 }
 
 #resultado div:hover{
     background:#f0f0f0;
 }
+
 </style>
 </head>
-
 <body>
 
 <h2>Recebimento de Motoristas</h2>
@@ -56,8 +63,6 @@ button{
 <input type="text" id="pesquisa">
 
 <div id="resultado"></div>
-
-<br>
 
 <label>Fornecedor</label>
 <input type="text" id="fornecedor" readonly>
@@ -74,68 +79,9 @@ button{
 <label>Motorista</label>
 <input type="text" id="motorista">
 
-<button>
-Registrar Chegada
-</button>
+<button>Registrar Chegada</button>
 
 <script>
 
-const pesquisa =
-document.getElementById("pesquisa");
+let linhasCSV = [];
 
-const resultado =
-document.getElementById("resultado");
-
-pesquisa.addEventListener("input", async () => {
-
-const texto =
-pesquisa.value.toLowerCase();
-
-const resposta =
-await fetch("produtos.csv.CSV");
-
-const csv =
-await resposta.text();
-
-const linhas =
-csv.split("\n");
-
-resultado.innerHTML = "";
-
-linhas.forEach(linha => {
-
-if(linha.toLowerCase().includes(texto))
-{
-
-const div =
-document.createElement("div");
-
-div.innerText = linha;
-
-div.onclick = () => {
-    
-const campos =
-linha.split(";");
-
-document.getElementById(
-"fornecedor"
-).value = campos[0] || "";
-
-document.getElementById(
-"produto"
-).value = campos[1] || "";
-
-};
-
-resultado.appendChild(div);
-
-}
-
-});
-
-});
-
-</script>
-
-</body>
-</html>
