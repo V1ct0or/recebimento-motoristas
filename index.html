@@ -85,3 +85,61 @@ button{
 
 let linhasCSV = [];
 
+async function carregarCSV() {
+
+    const resposta = await fetch("produtos.csv.CSV");
+
+    const texto = await resposta.text();
+
+    linhasCSV = texto
+        .split(/\r?\n/)
+        .filter(linha => linha.trim() !== "");
+
+}
+
+carregarCSV();
+
+const pesquisa = document.getElementById("pesquisa");
+const resultado = document.getElementById("resultado");
+
+pesquisa.addEventListener("input", function(){
+
+    const busca = this.value.toLowerCase();
+
+    resultado.innerHTML = "";
+
+    linhasCSV
+        .filter(linha => linha.toLowerCase().includes(busca))
+        .slice(0,50)
+        .forEach(linha => {
+
+            const item = document.createElement("div");
+
+            item.textContent = linha;
+
+            item.onclick = function(){
+
+                let partes = linha.split(";");
+
+                if(partes.length < 2){
+                    partes = linha.split(",");
+                }
+
+                document.getElementById("fornecedor").value =
+                    partes[0] || "";
+
+                document.getElementById("produto").value =
+                    partes[1] || "";
+
+            };
+
+            resultado.appendChild(item);
+
+        });
+
+});
+
+</script>
+
+</body>
+</html>
